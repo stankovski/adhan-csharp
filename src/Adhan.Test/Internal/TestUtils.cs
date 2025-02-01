@@ -25,12 +25,10 @@ namespace Adhan.Test.Internal
 
                 return TimeZoneInfo.FindSystemTimeZoneById(windowsTimeZoneId);
             }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            else
             {
                 return TimeZoneInfo.FindSystemTimeZoneById(ianaTimezone);
             }
-
-            return null;
         }
 
         public static DateTime MakeDate(int year, int month, int day)

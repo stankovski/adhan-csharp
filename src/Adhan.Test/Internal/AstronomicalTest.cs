@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Batoulapps.Adhan;
+﻿using Batoulapps.Adhan;
 using Batoulapps.Adhan.Internal;
 using System.IO;
 using Adhan.Test.Data;
@@ -9,10 +7,9 @@ using Adhan.Test.Internal;
 
 namespace Adhan.Test.Internal
 {
-    [TestClass]
     public class AstronomicalTest
     {
-        [TestMethod]
+        [Fact]
         public void SolarCoordinates()
         {
 
@@ -34,17 +31,17 @@ namespace Adhan.Test.Internal
             double δ = solar.Declination;
             double α = DoubleUtil.UnwindAngle(solar.RightAscension);
 
-            Assert.IsTrue(T.IsWithin(0.00000000001, (-0.072183436)));
-            Assert.IsTrue(L0.IsWithin(0.00001, (201.80720)));
-            Assert.IsTrue(ε0.IsWithin(0.00001, (23.44023)));
-            Assert.IsTrue(εapp.IsWithin(0.00001, (23.43999)));
-            Assert.IsTrue(M.IsWithin(0.00001, (278.99397)));
-            Assert.IsTrue(C.IsWithin(0.00001, (-1.89732)));
+            Assert.True(T.IsWithin(0.00000000001, (-0.072183436)));
+            Assert.True(L0.IsWithin(0.00001, (201.80720)));
+            Assert.True(ε0.IsWithin(0.00001, (23.44023)));
+            Assert.True(εapp.IsWithin(0.00001, (23.43999)));
+            Assert.True(M.IsWithin(0.00001, (278.99397)));
+            Assert.True(C.IsWithin(0.00001, (-1.89732)));
 
             // lower accuracy than desired
-            Assert.IsTrue(λ.IsWithin(0.00002, (199.90895)));
-            Assert.IsTrue(δ.IsWithin(0.00001, (-7.78507)));
-            Assert.IsTrue(α.IsWithin(0.00001, (198.38083)));
+            Assert.True(λ.IsWithin(0.00002, (199.90895)));
+            Assert.True(δ.IsWithin(0.00001, (-7.78507)));
+            Assert.True(α.IsWithin(0.00001, (198.38083)));
 
             // values from Astronomical Algorithms page 88
 
@@ -64,19 +61,19 @@ namespace Adhan.Test.Internal
                 /* solarLongitude */ L0, /* lunarLongitude */ Lp, /* ascendingNode */ Ω);
             double ε = ε0 + Δε;
 
-            Assert.IsTrue(θ0.IsWithin(0.000001, (197.693195)));
-            Assert.IsTrue(θapp.IsWithin(0.0001, (197.6922295833)));
+            Assert.True(θ0.IsWithin(0.000001, (197.693195)));
+            Assert.True(θapp.IsWithin(0.0001, (197.6922295833)));
 
             // values from Astronomical Algorithms page 148
 
-            Assert.IsTrue(Ω.IsWithin(0.0001, (11.2531)));
-            Assert.IsTrue(ΔΨ.IsWithin(0.0001, (-0.0010522)));
-            Assert.IsTrue(Δε.IsWithin(0.00001, (0.0026230556)));
-            Assert.IsTrue(ε0.IsWithin(0.000001, (23.4409463889)));
-            Assert.IsTrue(ε.IsWithin(0.00001, (23.4435694444)));
+            Assert.True(Ω.IsWithin(0.0001, (11.2531)));
+            Assert.True(ΔΨ.IsWithin(0.0001, (-0.0010522)));
+            Assert.True(Δε.IsWithin(0.00001, (0.0026230556)));
+            Assert.True(ε0.IsWithin(0.000001, (23.4409463889)));
+            Assert.True(ε.IsWithin(0.00001, (23.4435694444)));
         }
 
-        [TestMethod]
+        [Fact]
         public void RightAscensionEdgeCase()
         {
             SolarTime previousTime = null;
@@ -88,17 +85,17 @@ namespace Adhan.Test.Internal
                 if (i > 0)
                 {
                     // transit from one day to another should not differ more than one minute
-                    Assert.IsTrue(Math.Abs(time.Transit - previousTime.Transit) < (1.0 / 60.0));
+                    Assert.True(Math.Abs(time.Transit - previousTime.Transit) < (1.0 / 60.0));
 
                     // sunrise and sunset from one day to another should not differ more than two minutes
-                    Assert.IsTrue(Math.Abs(time.Sunrise - previousTime.Sunrise) < (2.0 / 60.0));
-                    Assert.IsTrue(Math.Abs(time.Sunset - previousTime.Sunset) < (2.0 / 60.0));
+                    Assert.True(Math.Abs(time.Sunrise - previousTime.Sunrise) < (2.0 / 60.0));
+                    Assert.True(Math.Abs(time.Sunset - previousTime.Sunset) < (2.0 / 60.0));
                 }
                 previousTime = time;
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void AltitudeOfCelestialBody()
         {
             double φ = 38 + (55 / 60.0) + (17.0 / 3600);
@@ -106,10 +103,10 @@ namespace Adhan.Test.Internal
             double H = 64.352133;
             double h = Astronomical.AltitudeOfCelestialBody(
                 /* observerLatitude */ φ, /* declination */ δ, /* localHourAngle */ H);
-            Assert.IsTrue(h.IsWithin(0.0001, 15.1249));
+            Assert.True(h.IsWithin(0.0001, 15.1249));
         }
 
-        [TestMethod]
+        [Fact]
         public void TransitAndHourAngle()
         {
             // values from Astronomical Algorithms page 103
@@ -121,14 +118,14 @@ namespace Adhan.Test.Internal
             double m0 = Astronomical.ApproximateTransit(longitude,
                 /* siderealTime */ Θ, /* rightAscension */ α2);
 
-            Assert.IsTrue(m0.IsWithin(0.00001, 0.81965));
+            Assert.True(m0.IsWithin(0.00001, 0.81965));
 
             double transit = Astronomical.CorrectedTransit(
                 /* approximateTransit */ m0, longitude, /* siderealTime */ Θ,
                 /* rightAscension */ α2, /* previousRightAscension */ α1,
                 /* nextRightAscension */ α3) / 24;
 
-            Assert.IsTrue(transit.IsWithin(0.00001, 0.81980));
+            Assert.True(transit.IsWithin(0.00001, 0.81980));
 
             double δ1 = 18.04761;
             double δ2 = 18.44092;
@@ -140,10 +137,10 @@ namespace Adhan.Test.Internal
                 /* rightAscension */ α2, /* previousRightAscension */ α1,
                 /* nextRightAscension */ α3, /* declination */ δ2,
                 /* previousDeclination */ δ1, /* nextDeclination */ δ3) / 24;
-            Assert.IsTrue(rise.IsWithin(0.00001, 0.51766));
+            Assert.True(rise.IsWithin(0.00001, 0.51766));
         }
 
-        [TestMethod]
+        [Fact]
         public void SolarTime()
         {
             /*
@@ -160,15 +157,15 @@ namespace Adhan.Test.Internal
             double twilightStart = solar.HourAngle(-6, /* afterTransit */ false);
             double twilightEnd = solar.HourAngle(-6, /* afterTransit */ true);
             double invalid = solar.HourAngle(-36, /* afterTransit */ true);
-            Assert.IsTrue(TimeString(twilightStart) == "9:38");
-            Assert.IsTrue(TimeString(sunrise) == "10:08");
-            Assert.IsTrue(TimeString(transit) == "17:20");
-            Assert.IsTrue(TimeString(sunset) == "24:32");
-            Assert.IsTrue(TimeString(twilightEnd) == "25:02");
-            Assert.IsTrue(TimeString(invalid) == "");
+            Assert.True(TimeString(twilightStart) == "9:38");
+            Assert.True(TimeString(sunrise) == "10:08");
+            Assert.True(TimeString(transit) == "17:20");
+            Assert.True(TimeString(sunset) == "24:32");
+            Assert.True(TimeString(twilightEnd) == "25:02");
+            Assert.True(TimeString(invalid) == "");
         }
 
-        [TestMethod]
+        [Fact]
         public void CalendricalDate()
         {
             // generated from http://aa.usno.navy.mil/data/docs/RS_OneYear.php for KUKUIHAELE, HAWAII
@@ -180,109 +177,109 @@ namespace Adhan.Test.Internal
             double day1 = day1solar.Sunrise;
             double day2 = day2solar.Sunrise;
 
-            Assert.IsTrue(TimeString(day1) == "16:15");
-            Assert.IsTrue(TimeString(day2) == "16:14");
+            Assert.True(TimeString(day1) == "16:15");
+            Assert.True(TimeString(day2) == "16:14");
         }
 
-        [TestMethod]
+        [Fact]
         public void Interpolation()
         {
             // values from Astronomical Algorithms page 25
             double interpolatedValue = Astronomical.Interpolate(/* value */ 0.877366,
                 /* previousValue */ 0.884226, /* nextValue */ 0.870531, /* factor */ 4.35 / 24);
-            Assert.IsTrue(interpolatedValue.IsWithin(0.000001, 0.876125));
+            Assert.True(interpolatedValue.IsWithin(0.000001, 0.876125));
 
             double i1 = Astronomical.Interpolate(
                 /* value */ 1, /* previousValue */ -1, /* nextValue */ 3, /* factor */ 0.6);
-            Assert.IsTrue(i1.IsWithin(0.000001, 2.2));
+            Assert.True(i1.IsWithin(0.000001, 2.2));
         }
 
-        [TestMethod]
+        [Fact]
         public void AngleInterpolation()
         {
             double i1 = Astronomical.InterpolateAngles(/* value */ 1, /* previousValue */ -1,
                 /* nextValue */ 3, /* factor */ 0.6);
-            Assert.IsTrue(i1.IsWithin(0.000001, 2.2));
+            Assert.True(i1.IsWithin(0.000001, 2.2));
 
             double i2 = Astronomical.InterpolateAngles(/* value */ 1, /* previousValue */ 359,
                 /* nextValue */ 3, /* factor */ 0.6);
-            Assert.IsTrue(i2.IsWithin(0.000001, 2.2));
+            Assert.True(i2.IsWithin(0.000001, 2.2));
         }
 
-        [TestMethod]
+        [Fact]
         public void JulianDay()
         {
             /*
              * Comparison values generated from http://aa.usno.navy.mil/data/docs/JulianDate.php
              */
 
-            Assert.IsTrue(CalendricalHelper.JulianDay(/* year */ 2010, /* month */ 1, /* day */ 2)
+            Assert.True(CalendricalHelper.JulianDay(/* year */ 2010, /* month */ 1, /* day */ 2)
                 .IsWithin(0.00001, 2455198.500000));
-            Assert.IsTrue(CalendricalHelper.JulianDay(/* year */ 2011, /* month */ 2, /* day */ 4)
+            Assert.True(CalendricalHelper.JulianDay(/* year */ 2011, /* month */ 2, /* day */ 4)
                 .IsWithin(0.00001, 2455596.500000));
-            Assert.IsTrue(CalendricalHelper.JulianDay(/* year */ 2012, /* month */ 3, /* day */ 6)
+            Assert.True(CalendricalHelper.JulianDay(/* year */ 2012, /* month */ 3, /* day */ 6)
                 .IsWithin(0.00001, 2455992.500000));
-            Assert.IsTrue(CalendricalHelper.JulianDay(/* year */ 2013, /* month */ 4, /* day */ 8)
+            Assert.True(CalendricalHelper.JulianDay(/* year */ 2013, /* month */ 4, /* day */ 8)
                 .IsWithin(0.00001, 2456390.500000));
-            Assert.IsTrue(CalendricalHelper.JulianDay(/* year */ 2014, /* month */ 5, /* day */ 10)
+            Assert.True(CalendricalHelper.JulianDay(/* year */ 2014, /* month */ 5, /* day */ 10)
                 .IsWithin(0.00001, 2456787.500000));
-            Assert.IsTrue(CalendricalHelper.JulianDay(/* year */ 2015, /* month */ 6, /* day */ 12)
+            Assert.True(CalendricalHelper.JulianDay(/* year */ 2015, /* month */ 6, /* day */ 12)
                 .IsWithin(0.00001, 2457185.500000));
-            Assert.IsTrue(CalendricalHelper.JulianDay(/* year */ 2016, /* month */ 7, /* day */ 14)
+            Assert.True(CalendricalHelper.JulianDay(/* year */ 2016, /* month */ 7, /* day */ 14)
                 .IsWithin(0.00001, 2457583.500000));
-            Assert.IsTrue(CalendricalHelper.JulianDay(/* year */ 2017, /* month */ 8, /* day */ 16)
+            Assert.True(CalendricalHelper.JulianDay(/* year */ 2017, /* month */ 8, /* day */ 16)
                 .IsWithin(0.00001, 2457981.500000));
-            Assert.IsTrue(CalendricalHelper.JulianDay(/* year */ 2018, /* month */ 9, /* day */ 18)
+            Assert.True(CalendricalHelper.JulianDay(/* year */ 2018, /* month */ 9, /* day */ 18)
                 .IsWithin(0.00001, 2458379.500000));
-            Assert.IsTrue(CalendricalHelper.JulianDay(/* year */ 2019, /* month */ 10, /* day */ 20)
+            Assert.True(CalendricalHelper.JulianDay(/* year */ 2019, /* month */ 10, /* day */ 20)
                 .IsWithin(0.00001, 2458776.500000));
-            Assert.IsTrue(CalendricalHelper.JulianDay(/* year */ 2020, /* month */ 11, /* day */ 22)
+            Assert.True(CalendricalHelper.JulianDay(/* year */ 2020, /* month */ 11, /* day */ 22)
                 .IsWithin(0.00001, 2459175.500000));
-            Assert.IsTrue(CalendricalHelper.JulianDay(/* year */ 2021, /* month */ 12, /* day */ 24)
+            Assert.True(CalendricalHelper.JulianDay(/* year */ 2021, /* month */ 12, /* day */ 24)
                 .IsWithin(0.00001, 2459572.500000));
 
             double jdVal = 2457215.67708333;
-            Assert.IsTrue(
+            Assert.True(
                 CalendricalHelper.JulianDay(/* year */ 2015, /* month */ 7, /* day */ 12, /* hours */ 4.25)
                 .IsWithin(0.000001, jdVal));
 
             DateTime components = TestUtils.MakeDate(/* year */ 2015, /* month */ 7, /* day */ 12,
                 /* hour */ 4, /* minute */ 15);
-            Assert.IsTrue(CalendricalHelper.JulianDay(components).IsWithin(0.000001, jdVal));
+            Assert.True(CalendricalHelper.JulianDay(components).IsWithin(0.000001, jdVal));
 
-            Assert.IsTrue(CalendricalHelper
+            Assert.True(CalendricalHelper
                 .JulianDay(/* year */ 2015, /* month */ 7, /* day */ 12, /* hours */ 8.0)
                 .IsWithin(0.000001, 2457215.833333));
-            Assert.IsTrue(CalendricalHelper
+            Assert.True(CalendricalHelper
                 .JulianDay(/* year */ 1992, /* month */ 10, /* day */ 13, /* hours */ 0.0)
                 .IsWithin(0.000001, 2448908.5));
         }
 
-        [TestMethod]
+        [Fact]
         public void JulianHours()
         {
             double j1 = CalendricalHelper.JulianDay(/* year */ 2010, /* month */ 1, /* day */ 3);
             double j2 = CalendricalHelper.JulianDay(/* year */ 2010,
                 /* month */ 1, /* day */ 1, /* hours */ 48);
-            Assert.IsTrue(j1.IsWithin(0.0000001, j2));
+            Assert.True(j1.IsWithin(0.0000001, j2));
         }
 
-        [TestMethod]
+        [Fact]
         public void LeapYear()
         {
-            Assert.IsFalse(CalendarUtil.IsLeapYear(2015));
-            Assert.IsTrue(CalendarUtil.IsLeapYear(2016));
-            Assert.IsTrue(CalendarUtil.IsLeapYear(1600));
-            Assert.IsTrue(CalendarUtil.IsLeapYear(2000));
-            Assert.IsTrue(CalendarUtil.IsLeapYear(2400));
-            Assert.IsFalse(CalendarUtil.IsLeapYear(1700));
-            Assert.IsFalse(CalendarUtil.IsLeapYear(1800));
-            Assert.IsFalse(CalendarUtil.IsLeapYear(1900));
-            Assert.IsFalse(CalendarUtil.IsLeapYear(2100));
-            Assert.IsFalse(CalendarUtil.IsLeapYear(2200));
-            Assert.IsFalse(CalendarUtil.IsLeapYear(2300));
-            Assert.IsFalse(CalendarUtil.IsLeapYear(2500));
-            Assert.IsFalse(CalendarUtil.IsLeapYear(2600));
+            Assert.False(CalendarUtil.IsLeapYear(2015));
+            Assert.True(CalendarUtil.IsLeapYear(2016));
+            Assert.True(CalendarUtil.IsLeapYear(1600));
+            Assert.True(CalendarUtil.IsLeapYear(2000));
+            Assert.True(CalendarUtil.IsLeapYear(2400));
+            Assert.False(CalendarUtil.IsLeapYear(1700));
+            Assert.False(CalendarUtil.IsLeapYear(1800));
+            Assert.False(CalendarUtil.IsLeapYear(1900));
+            Assert.False(CalendarUtil.IsLeapYear(2100));
+            Assert.False(CalendarUtil.IsLeapYear(2200));
+            Assert.False(CalendarUtil.IsLeapYear(2300));
+            Assert.False(CalendarUtil.IsLeapYear(2500));
+            Assert.False(CalendarUtil.IsLeapYear(2600));
         }
 
         private string TimeString(double when)

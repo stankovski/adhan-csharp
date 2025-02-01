@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Batoulapps.Adhan;
+﻿using Batoulapps.Adhan;
 using Batoulapps.Adhan.Internal;
 using System.IO;
 using Adhan.Test.Data;
@@ -9,12 +7,11 @@ using Adhan.Test.Internal;
 
 namespace Adhan.Test
 {
-    [TestClass]
     public class TimingTest
     {
         private const string timingPath = "../../../../../shared/times/";
 
-        [TestMethod]
+        [Fact]
         public void TestTimes()
         {
             string[] files = Directory.GetFiles(timingPath, "*.json");
@@ -27,7 +24,7 @@ namespace Adhan.Test
         private void TestTimingFile(string file)
         {
             TimingFile timingFile = TimingFile.Load(file);
-            Assert.IsNotNull(timingFile);
+            Assert.NotNull(timingFile);
 
             Coordinates coordinates = new Coordinates(timingFile.Parameters.Latitude, timingFile.Parameters.Longitude);
             CalculationParameters parameters = ParseParameters(timingFile.Parameters);
@@ -38,22 +35,22 @@ namespace Adhan.Test
                 PrayerTimes prayerTimes = new PrayerTimes(coordinates, dateComponents, parameters);
 
                 long fajrDifference = GetDifferenceInMinutes(prayerTimes.Fajr, info.Date, info.Fajr, timingFile.Parameters.Timezone);
-                Assert.IsTrue(fajrDifference.IsAtMost(timingFile.Variance));
+                Assert.True(fajrDifference.IsAtMost(timingFile.Variance));
 
                 long sunriseDifference = GetDifferenceInMinutes(prayerTimes.Sunrise, info.Date, info.Sunrise, timingFile.Parameters.Timezone);
-                Assert.IsTrue(sunriseDifference.IsAtMost(timingFile.Variance));
+                Assert.True(sunriseDifference.IsAtMost(timingFile.Variance));
 
                 long dhuhrDifference = GetDifferenceInMinutes(prayerTimes.Dhuhr, info.Date, info.Dhuhr, timingFile.Parameters.Timezone);
-                Assert.IsTrue(dhuhrDifference.IsAtMost(timingFile.Variance));
+                Assert.True(dhuhrDifference.IsAtMost(timingFile.Variance));
 
                 long asrDifference = GetDifferenceInMinutes(prayerTimes.Asr, info.Date, info.Asr, timingFile.Parameters.Timezone);
-                Assert.IsTrue(asrDifference.IsAtMost(timingFile.Variance));
+                Assert.True(asrDifference.IsAtMost(timingFile.Variance));
 
                 long maghribDifference = GetDifferenceInMinutes(prayerTimes.Maghrib, info.Date, info.Maghrib, timingFile.Parameters.Timezone);
-                Assert.IsTrue(maghribDifference.IsAtMost(timingFile.Variance));
+                Assert.True(maghribDifference.IsAtMost(timingFile.Variance));
 
                 long ishaDifference = GetDifferenceInMinutes(prayerTimes.Isha, info.Date, info.Isha, timingFile.Parameters.Timezone);
-                Assert.IsTrue(ishaDifference.IsAtMost(timingFile.Variance));
+                Assert.True(ishaDifference.IsAtMost(timingFile.Variance));
             }
         }
 
