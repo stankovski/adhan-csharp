@@ -8,6 +8,14 @@ Implementations of Adhan in other languages can be found in the parent repo [Adh
 
 ## Usage
 
+### Nuget
+
+Add [Adhan](https://www.nuget.org/packages/Adhan) nuget package to your project:
+
+```
+dotnet add package Adhan --version 0.9.0
+```
+
 ### Visual Studio Code
 
 Open Visual Studio Code.  Choose File Open Folder and select the folder where the cloned repo exists (e.g. c:\repos\adhan-csharp).
